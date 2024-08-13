@@ -13,7 +13,7 @@ export const useGetPosts = () => {
 
 export const fetchPosts = async () => {
     const {data} = await axios.get(
-      'https://jsonplaceholder.typicode.com/posts'
+      'http://localhost:4000/posts'
     );
     console.log('fetch posts', data)
     return data;
