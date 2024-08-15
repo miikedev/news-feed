@@ -1,16 +1,15 @@
 "use client"
-import React,{ useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Toggle } from "@/components/ui/toggle"
-import { Textarea } from './ui/textarea'
+import { useState } from 'react'
 import { Button } from './ui/button'
+import { Textarea } from './ui/textarea'
 const Comment = ({ index, comment, currentUserId }) => {
   const [showReplies, setShowReplies] = useState(false);
   const [showReplyInput, setShowReplyInput] = useState(false);  
   const handleToggleReplies = () => {  
     setShowReplies(prev => !prev);  
   };  
-
   const handleLike = () => {  
     onLike(comment.id);  
   };  
@@ -52,10 +51,7 @@ const Comment = ({ index, comment, currentUserId }) => {
               <small>{showReplies ? 'Hide Replies' : 'Show Replies'} ({comment.comments.length})</small>
             </div>
             }
-            
           </div>
-          
-          
         </div>
         {showReplyInput && (  
             <div className="relative flex gap-2 my-1">  
@@ -76,7 +72,6 @@ const Comment = ({ index, comment, currentUserId }) => {
               ))}  
             </div>  
         )}
-         
       </div>
     </div>
   )
