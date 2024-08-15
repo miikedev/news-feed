@@ -1,31 +1,16 @@
-import React, { useState, useEffect } from "react";
 import { useGetPosts } from "@/api/posts";
-import { QueryInfiniteScroll } from "react-query-infinite-scroll";
 import Comment from "@/components/comment";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { Toggle } from "@/components/ui/toggle";
-const HandleInfiniteScroll = () => {
+import React, { useEffect, useState } from "react";
+import { QueryInfiniteScroll } from "react-query-infinite-scroll";
+
+const HandleInfiniteScroll = ({currentUserId}) => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
@@ -42,6 +27,7 @@ const HandleInfiniteScroll = () => {
   const handleCommentClick = () => {
     console.log("click");
   };
+  console.log('current user id', currentUserId);
   return (
     <QueryInfiniteScroll
       query={useGetPosts()}
@@ -77,7 +63,6 @@ const HandleInfiniteScroll = () => {
         const sliceData = res && _.shuffle(res?.slice(0, 10));
         return sliceData.map((page, index) => {
           const photoUrl = page.profile_photo+page.userId;
-          console.log(photoUrl);
           return(
           <Card key={index} className="w-[350px] mb-3">
             <CardHeader>
@@ -91,7 +76,7 @@ const HandleInfiniteScroll = () => {
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                   <small className="text-slate-600 font-semibold">
-                    user:{page.userId}
+                    user:{page.author}
                   </small>
                 </div>
                 <small className="text-slate-600">date: 8-8-2024</small>
@@ -101,7 +86,7 @@ const HandleInfiniteScroll = () => {
             <CardContent>
               <p>{page.body}</p>
             </CardContent>
-            <div className="w-[88%] border border-slate-200 mx-auto px-2 py-2 flex justify-between">
+            <div className="w-[88%] mx-auto px-2 flex justify-between">
               <div className="flex items-center text-slate-900 text-opacity-50">
                 <small className="text-slate-900 text-opacity-50">
                   like:{page.likes}
@@ -109,9 +94,9 @@ const HandleInfiniteScroll = () => {
               </div>
               <small className="text-cyan-600">{page.comments_count}comments</small>
             </div>
-            <CardFooter className="flex justify-between py-3">
+            <CardFooter className="flex justify-between py-1 border border-slate-200 w-[88%] mx-auto my-2">
               {/* like */}
-              <Toggle aria-label="Toggle italic" size="sm">
+              <Toggle disabled={page.userId == currentUserId ? true: false} aria-label="Toggle italic" size="sm" className="h-5 text-slate-600">
                 like
               </Toggle>
               {/* comment */}
@@ -128,13 +113,13 @@ const HandleInfiniteScroll = () => {
                       <div className="flex items-center">
                         <Avatar className="inline">
                           <AvatarImage
-                            src={`https://api.dicebear.com/9.x/adventurer/svg?seed=${index}`}
+                            src={photoUrl}
                             alt="@shadcn"
                           />
                           <AvatarFallback>CN</AvatarFallback>
                         </Avatar>
                         <small className="text-slate-600 font-semibold ml-2">
-                          user:{page.userId}
+                          user:{page.author}
                         </small>
                       </div>
                       <small className="text-slate-600 relative right-7">
@@ -145,16 +130,30 @@ const HandleInfiniteScroll = () => {
                   </DialogHeader>
                   <DialogDescription>{page.body}</DialogDescription>
                   <DialogFooter className="">
-                    <div className="w-full border border-slate-200 px-5 py-2 flex justify-between">
+                    <div className="w-full px-5 py-2 flex justify-between">
                       <div className="flex items-center text-slate-900 text-opacity-50">
-                        <small className="text-slate-900 text-opacity-50">
-                          like:{page.likes}
+                        <small className="text-slate-900 text-opacity-90">
+                          <Toggle disabled={page.userId == currentUserId ? true: false} aria-label="Toggle italic" size="sm" className="h-5 text-slate-600 hover:bg-cyan-300">like</Toggle>:<span className="text-slate-900 text-opacity-50">{page.likes}</span>
                         </small>
                       </div>
                       <small className="text-cyan-600">{page.comments_count}comments</small>
-                      <small className="relative right-5 text-slate-900 text-opacity-50">
-                        share
-                      </small>
+                      <Dialog>
+                        <DialogTrigger>
+                          <small className="relative right-5 text-slate-900 hover:text-cyan-600 text-opacity-90 cursor-pointer">
+                            share
+                          </small>
+                        </DialogTrigger>
+        
+                          <DialogContent className="w-[300px]">
+                            <DialogTitle>Are you sure to share this post?</DialogTitle>
+                            <div className="flex gap-3 justify-center">
+                            <Button className="w-full mt-2 bg-cyan-500 hover:bg-cyan-600 text-[.8rem] min-w-1/3">
+                              Share
+                            </Button>
+                            </div>
+  
+                        </DialogContent>
+                      </Dialog>
                     </div>
                   </DialogFooter>
                   <div className="min-h-[300px] h-[400px] overflow-y-scroll border border-slate-200 p-3">
@@ -168,8 +167,8 @@ const HandleInfiniteScroll = () => {
                         </div>
                       </div>
                     ) : (
-                      page.comments.map((item, index) => (
-                        <Comment index={index} item={item} />
+                      page.comments.map((comment, index) => (
+                        <Comment index={index} comment={comment} currentUserId={currentUserId} key={index}/>
                       ))
                     )}
                   </div>
@@ -187,7 +186,21 @@ const HandleInfiniteScroll = () => {
                 </DialogContent>
               </Dialog>
               {/* share */}
-              <small className="relative right-5">share</small>
+              <Dialog>
+                <DialogTrigger>
+                  <small className="relative right-5 text-slate-900 hover:text-cyan-600 text-opacity-90 cursor-pointer">
+                    share
+                  </small>
+                </DialogTrigger>
+                  <DialogContent className="w-[300px]">
+                    <Textarea placeholder="what's on your mind?" className="relative top-[20px]"/>
+                    <div className="flex gap-3 justify-center">
+                    <Button className="w-full mt-2 bg-cyan-500 hover:bg-cyan-600 text-[.8rem] min-w-1/3">
+                      Share
+                    </Button>
+                    </div>
+                </DialogContent>
+              </Dialog>
             </CardFooter>
           </Card>
         )});

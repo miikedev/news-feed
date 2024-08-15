@@ -1,9 +1,10 @@
 {
     "posts": [
         {
-            "userId": 1,
-            "profile_photo": "https://api.dicebear.com/9.x/adventurer/svg?seed=",
             "id": 1,
+            "userId": 1,
+            "author": "Alice",
+            "profile_photo": "https://api.dicebear.com/9.x/adventurer/svg?seed=",
             "title": "First Post",
             "body": "This is the content of the first post.",
             "likes": 10,
@@ -11,22 +12,25 @@
             "comments": [
                 {
                     "id": 1,
-                    "author": "Alice",
+                    "userId": 2,
+                    "author": "Bob",
                     "content": "Great post!",
                     "likes": 2,
                     "comments": []
                 },
                 {
                     "id": 2,
-                    "author": "Bob",
+                    "userId": 3,
+                    "author": "David",
                     "content": "I agree with Alice.",
                     "likes": 1,
                     "comments": [
                         {
                             "id": 1,
-                            "author": "Charlie",
+                            "userId": "2",
+                            "author": "Bob",
                             "content": "Thanks for sharing!",
-                            "likes": 0,
+                            "likes": 10,
                             "comments": []
                         }
                     ]
@@ -35,6 +39,7 @@
         },
         {
             "userId": 2,
+            "author": "Bob",
             "profile_photo": "https://api.dicebear.com/9.x/adventurer/svg?seed=",
             "id": 2,
             "title": "Second Post",
@@ -44,7 +49,7 @@
             "comments": [
                 {
                     "id": 1,
-                    "author": "David",
+                    "author": "Alice",
                     "content": "Nice work.",
                     "likes": 3,
                     "comments": []
@@ -53,6 +58,7 @@
         },
         {
             "userId": 3,
+            "author": "David",
             "profile_photo": "https://api.dicebear.com/9.x/adventurer/svg?seed=",
             "id": 3,
             "title": "Third Post",
@@ -62,7 +68,7 @@
             "comments": [
                 {
                     "id": 1,
-                    "author": "David",
+                    "author": "Alice",
                     "content": "Nice work.",
                     "likes": 3,
                     "comments": []

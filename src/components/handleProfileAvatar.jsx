@@ -21,7 +21,7 @@ const HandleProfileAvatar = () => {
       <DropdownMenuTrigger asChild>
         <Avatar className="inline float-right cursor-pointer">
           <AvatarImage
-            src={`https://api.dicebear.com/9.x/adventurer/svg?seed=ke`}
+            src={`https://api.dicebear.com/9.x/adventurer/svg?seed=2`}
             alt="@shadcn"
           />
           <AvatarFallback>CN</AvatarFallback>

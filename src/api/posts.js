@@ -13,7 +13,7 @@ export const useGetPosts = () => {
 
 export const fetchPosts = async () => {
     const {data} = await axios.get(
-      'http://localhost:4000/posts'
+      'http://localhost:3000/posts'
     );
     console.log('fetch posts', data)
     return data;

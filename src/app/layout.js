@@ -20,6 +20,7 @@ import Image from "next/image";
 import HandleProfileAvatar from "@/components/handleProfileAvatar";
 
 export default function RootLayout({ children }) {
+  
   return (
     <html lang="en">
       <body className={inter.className}>
