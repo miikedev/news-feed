@@ -11,6 +11,7 @@ import {
 } from '@tanstack/react-query'
 const queryClient = new QueryClient()
 const Home = () => {
+  const currentUserId = 2;
   const [loading, setLoading] = useState(true);  
   const [showModal, setShowModal] = useState(false);  
   const [selectedPost, setSelectedPost] = useState(null); 
@@ -30,7 +31,7 @@ const Home = () => {
   return (
     <div className='flex flex-col items-center'>
         <QueryClientProvider client={queryClient}>
-          <HandleInfiniteScroll />
+          <HandleInfiniteScroll currentUserId={currentUserId}/>
         </QueryClientProvider>
       </div>
   )
