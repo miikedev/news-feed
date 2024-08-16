@@ -1,14 +1,12 @@
 'use client'
 
-import _ from 'lodash'
-import React, { useEffect, useState } from 'react'
-import { QueryInfiniteScroll } from "react-query-infinite-scroll";
 import HandleInfiniteScroll from '@/components/handleInfiniteScroll';
-import { useGetPosts } from '../api/posts'
 import {
   QueryClient,
   QueryClientProvider,
-} from '@tanstack/react-query'
+} from '@tanstack/react-query';
+import _ from 'lodash';
+import { useEffect, useState } from 'react';
 const queryClient = new QueryClient()
 const Home = () => {
   const currentUserId = 2;
